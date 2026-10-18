@@ -1,7 +1,11 @@
 # Rabbits Robotics
 
 [ATTRACTS](https://attracts-game.com/) 向けの対戦ロボット等を開発しているチームです。
-機体ごとの設計データ、ファームウェア、ROS 2 パッケージをこの組織で公開しています。
+機体ごとの設計データ、ファームウェア、ROS 2 パッケージをこの organization で公開しています。
+
+## チーム方針
+
+- 個人情報などプライバシーに関わるもの以外は、すべて公開します
 
 ## Robots
 
@@ -28,7 +32,7 @@
   - [ファームウェアリポジトリ](https://github.com/rabbits-robotics/.github/blob/main/docs/firmware-repo.md): ファームウェアの構成とビルド
   - [基板リポジトリ](https://github.com/rabbits-robotics/.github/blob/main/docs/pcb-repo.md): KiCad データの扱いと README の必須項目
   - [共通ライブラリ](https://github.com/rabbits-robotics/.github/blob/main/docs/common-lib.md): rabcl などの参照方法とタグ運用
-  - [ROS 2 ワークスペース](https://github.com/rabbits-robotics/.github/blob/main/docs/ros2-workspace.md): attracts_ws と機体ごとの `.repos`
+  - [ROS 2 ワークスペース](https://github.com/rabbits-robotics/.github/blob/main/docs/ros2-workspace.md): rabbits_ws と機体ごとの `.repos`
 
 各種類のライセンスと選定理由は、種類別のドキュメントに書いています。
 
