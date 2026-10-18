@@ -14,7 +14,7 @@
 ## 構成
 
 - ビルドシステムや開発環境は基板ごとに選びます。環境構築からビルド、書き込みまでの手順を README に書きます
-- 共通ライブラリは git submodule で参照し、タグで固定します（[common-lib.md](./common-lib.md)）
+- 共通ライブラリは git submodule で参照し、コミットを固定します（[common-lib.md](./common-lib.md)）
 - 使用機体は書きません。機体管理リポジトリ側からリンクします
 
 ## README テンプレート
@@ -58,7 +58,7 @@
 
 ## 依存ライブラリ
 
-| ライブラリ | タグ | 参照方法 |
+| ライブラリ | バージョン | 参照方法 |
 |---|---|---|
 | [rabcl](https://github.com/rabbits-robotics/rabcl) | v1.0 | git submodule |
 

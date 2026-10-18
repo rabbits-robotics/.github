@@ -177,7 +177,7 @@ git に入れるもの・除外するもの:
 
 - rabcl は独立した種類として扱う。今後、画像認識などで共通ライブラリが増える見込みがあるため
 - ファームからは git submodule、ROS 2 からは attracts_ws の `.repos` で参照する
-- rabcl にタグを打ち、submodule と `.repos` の両方がそのタグ（コミット）を指すようにする
+- 参照側（submodule と `.repos`）はコミットを固定し、同じ機体では両方が同じコミットを指すようにする。タグを打つかどうかは参照側の都合で決める
 - 何を rabcl に入れて何を機体側に残すかの線引き、ライブラリが増えたときの命名規則は `common-lib.md` に追記していく（命名規則は未決）
 
 ### 4.7 ROS 2 ワークスペース（attracts_ws）
@@ -230,7 +230,7 @@ git に入れるもの・除外するもの:
 | mech_ws/planetary_gear_design.md、計算スクリプト | 同上 |
 | 過去機体のスプレッドシート BOM | 上げ直さない。BOM は今後の正式な公開時・発注時に作る |
 | attracts_ws README | clone URL を組織に修正 |
-| beta_main の `.gitmodules` | rabcl の URL が旧組織（`robot-trainee`）のまま。rabcl にタグを打つ際に組織 URL へ直す |
+| beta_main の `.gitmodules` | rabcl の URL が旧組織（`robot-trainee`）のまま。submodule のコミットを固定する際に組織 URL へ直す |
 | gamma_main README | `gamma` リポジトリができてから、機体全体の節を移して分割（検討メモ 3 章） |
 | ベンダー配布物（LK モータツール、dm-tools、ATTRACTS_SimpleClient） | リポジトリには入れず、入手先リンクとバージョンだけ書く |
 
