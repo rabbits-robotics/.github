@@ -146,18 +146,16 @@ README の雛形は検討メモ 4 章のものを下敷きにする。alpha は�
 - 1 基板 1 リポジトリ。1 枚だけ改版することも、機体をまたいで使い回すこともあるため
 - `gamma_turret` は board_ws 上にローカルの git 履歴がある（2026-08-10 からの 10 コミット、remote 無し、どこにも push されていない）。これに remote を足し、履歴ごと `gamma_turret_pcb` として push する。検証用スクリプト（`check_nets.py` / `expected_nets.csv` / `erc.rpt`）も同居してよい（ユーザー未確認。基板リポジトリを作る段階で確認する）
 - ただしこの履歴には除外対象（`fp-info-cache`、autosave、展開済みガーバー 4 世代）と、他基板のバックアップ zip 46 個（`beta_main-backups` / `beta_turret-backups` / `proto2_turret-backups`）がコミット済み。push 前に `git filter-repo` で他基板のバックアップとキャッシュだけ履歴から消すか（推奨）、そのまま push するかは未決。`old_design/`（旧 STM32 版）は gamma の経緯なので残す
-- 他の基板は履歴が無いので新規作成する。各基板の現在の KiCad データは「最後に発注した版」と一致しているので、初回コミットにタグを打ち、改版履歴はそこから起こす。README の改版履歴・組立注意が埋まる前でも TODO 付きで push してよい
+- 他の基板は履歴が無いので新規作成する。各基板の現在の KiCad データは「最後に発注した版」と一致しているので、初回コミットにタグを打ち、改版はそこから起こす。README が埋まる前でも TODO 付きで push してよい
 - `proto2_chassis_b` / `proto2_turret_b` / `proto2_yaw_b` は同じ基板の Rev B として、`proto2_*_pcb` に後続コミット + タグで積む
 - board_ws の `chassis/` `turret/` `main/` `test_a` `test_b` は対象外（`chassis/` `turret/` `main/` は proto2 の古い残骸と推測。要確認）
 
-README に必ず書く項目（4 つ）:
+README に必ず書く項目（2 つ。改版履歴はタグとリリースで管理し、組立・接続時の注意は書かない）:
 
 | 項目 | 内容 |
 |---|---|
 | 基板の役割 | 何をする基板か 1〜2 行 |
 | 主要部品 | マイコン、CAN トランシーバ、レギュレータなど、仕様を決めている部品 |
-| 改版履歴 | 発注ごとに 1 行追加。日付、発注先、変更点、ガーバー zip の場所、タグ |
-| 組立・接続時の注意 | コネクタ挿し違いのような、やらかすと壊れる情報 |
 
 - 使用機体は書かない（相互参照を避ける）
 - BOM は KiCad から CSV で書き出し `bom.csv` として置く。README の表にはしない
@@ -169,11 +167,11 @@ git に入れるもの・除外するもの:
 | 入れる | `*.kicad_pro` / `*.kicad_sch` / `*.kicad_pcb` | 設計そのもの |
 | 入れる | `sym-lib-table` / `fp-lib-table` / `*.kicad_sym` / `*.pretty/` | プロジェクト固有ライブラリ。無いと開けない |
 | 入れる | 回路図 PDF、`*.step`、`*.DXF` | KiCad 無しで参照できる |
-| 入れる | 発注したガーバー zip（`gbr_YYYYMMDD.zip` または `production/`） | 「この基板はこのデータで作った」の証拠 |
+| Releases に添付 | 発注向けガーバー zip（`gbr_YYYYMMDD.zip`） | 「この基板はこのデータで作った」の証拠。発注ごとにタグ + リリースを作り添付する。git には入れない |
 | 除外 | `*-backups/` / `*.kicad_sch-bak` / `_autosave-*` / `#auto_saved_files#` | KiCad の自動バックアップ |
 | 除外 | `fp-info-cache` / `*.kicad_prl` | キャッシュと個人のローカル表示設定 |
 | 除外 | `*.dsn` / `*.ses` / `*.rules` / `*.net` | Freerouting の中間ファイル、古いネットリスト。再生成できる |
-| 除外 | 展開済みガーバーフォルダ（`gbr_YYYYMMDD/`） | zip と重複 |
+| 除外 | ガーバー zip と展開済みフォルダ（`gbr_*`） | Releases に添付するため git には入れない |
 
 ### 4.6 共通ライブラリ（rabcl など）
 
