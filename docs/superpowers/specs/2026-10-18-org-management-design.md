@@ -97,7 +97,7 @@
 |---|---|---|---|
 | 機体管理 | `機体名` | `alpha` / `beta` / `gamma`（新設） | CC BY 4.0 |
 | ファームウェア | `基板名_fw`（市販ボード向けは `製品名_役割_fw`）。既存リポジトリは rename しない。ただし `gamma_main` は整備前なので命名規則に合わせて `gamma_turret_fw` に rename した（2026-10-18） | alpha: `proto2_turret` / `proto2_yaw` / `proto2_main` / `proto2_chassis`、beta: `beta_main`、gamma: `gamma_turret_fw`（旧 `gamma_main`）、ほか `m5_basic_2_7_attracts`（gamma 以外は既存名を維持） | MIT |
-| 基板 | `基板名_pcb`、1 基板 1 リポジトリ | `gamma_turret_pcb` / `gamma_neck_pcb` / `gamma_chassis_pcb` / `beta_main_pcb` / `beta_chassis_pcb` / `proto2_turret_pcb` / `proto2_yaw_pcb` / `proto2_chassis_pcb` / `fuse_box_pcb` / `rsg_devboard_pcb`（新設、board_ws から） | CERN-OHL-P-2.0 |
+| 基板 | `基板名_pcb`、1 基板 1 リポジトリ | `gamma_turret_pcb` / `gamma_neck_pcb` / `gamma_chassis_pcb` / `beta_main_pcb` / `beta_chassis_pcb` / `proto2_turret_pcb` / `proto2_yaw_pcb` / `proto2_chassis_pcb`（新設、board_ws から）。fuse_box は未使用のため削除、DevBoard は自作でないため対象外（2026-10-18 決定） | CERN-OHL-P-2.0 |
 | 共通ライブラリ | 増えたときの命名規則は未決 | `rabcl` | MIT |
 | ROS 2 | `rabbits_役割`。既存ライブラリの ROS 2 ラッパーは `ライブラリ名_ros2`。既存の `attracts_*` は `rabbits_*` に rename する | `rabbits_ws` / `rabbits_bridge` / `rabbits_description` / `rabbits_interface` / `rabbits_msgs`（現 `attracts_*`）、`rabcl_ros2` | MIT |
 | 組織ルール | `.github` | 新設 | CC BY 4.0 |
@@ -145,10 +145,11 @@ README の雛形は検討メモ 4 章のものを下敷きにする。alpha は�
 
 - 1 基板 1 リポジトリ。1 枚だけ改版することも、機体をまたいで使い回すこともあるため
 - `gamma_turret` は board_ws 上にローカルの git 履歴がある（2026-08-10 からの 10 コミット、remote 無し、どこにも push されていない）。これに remote を足し、履歴ごと `gamma_turret_pcb` として push する。検証用スクリプト（`check_nets.py` / `expected_nets.csv` / `erc.rpt`）も同居してよい（ユーザー未確認。基板リポジトリを作る段階で確認する）
-- ただしこの履歴には除外対象（`fp-info-cache`、autosave、展開済みガーバー 4 世代）と、他基板のバックアップ zip 46 個（`beta_main-backups` / `beta_turret-backups` / `proto2_turret-backups`）がコミット済み。push 前に `git filter-repo` で他基板のバックアップとキャッシュだけ履歴から消すか（推奨）、そのまま push するかは未決。`old_design/`（旧 STM32 版）は gamma の経緯なので残す
+- ただしこの履歴には除外対象（`fp-info-cache`、autosave、展開済みガーバー 4 世代）と、他基板のバックアップ zip 46 個（`beta_main-backups` / `beta_turret-backups` / `proto2_turret-backups`）がコミット済み。2026-10-18 に `git filter-repo` で除外対象・他基板のバックアップ・検証スクリプトを履歴から消し、設計メモ（md）は `docs/` へ移した。`old_design/`（旧 STM32 版）は gamma の経緯なので残す
 - 他の基板は履歴が無いので新規作成する。各基板の現在の KiCad データは「最後に発注した版」と一致しているので、初回コミットにタグを打ち、改版はそこから起こす。README が埋まる前でも TODO 付きで push してよい
-- `proto2_chassis_b` / `proto2_turret_b` / `proto2_yaw_b` は同じ基板の Rev B として、`proto2_*_pcb` に後続コミット + タグで積む
-- board_ws の `chassis/` `turret/` `main/` `test_a` `test_b` は対象外（`chassis/` `turret/` `main/` は proto2 の古い残骸と推測。要確認）
+- Rev B のある基板（`proto2_turret_b` / `proto2_yaw_b`）は最新版（Rev B）だけを保存し、Rev A はコミットしない。`proto2_chassis_b` は無印と完全同一で Rev B は存在しない。複数回発注した基板（beta_main）も最新の発注分だけをリリースに添付する（2026-10-18 決定）
+- 設計メモ（md）は基板リポジトリの `docs/` に入れる。検証スクリプト・レポート・画像・SolidWorks アセンブリは入れない（2026-10-18 決定）
+- board_ws の `chassis/` `turret/` `main/` `test_a` `test_b` は対象外。`chassis/` は beta_chassis と完全同一の残骸、`turret/` は proto2_turret と beta_main の中間版、`main/` は旧 KiCad 形式
 
 README に必ず書く項目（2 つ。改版履歴はタグとリリースで管理し、組立・接続時の注意は書かない）:
 
@@ -222,7 +223,7 @@ git に入れるもの・除外するもの:
 |---|---|
 | 既存 17 リポジトリ | 種別に応じた LICENSE ファイルを追加 |
 | 組織プロフィール | `.github/profile/README.md` で埋める |
-| board_ws の KiCad 18 プロジェクト | 機体に属する 8 基板（proto2 の `_b` は Rev B として同じリポジトリに積む）+ fuse_box + DevBoard を `*_pcb` リポジトリ化。`chassis/` `turret/` `main/` `test_a` `test_b` は対象外（要確認） |
+| board_ws の KiCad 18 プロジェクト | 機体に属する 8 基板を `*_pcb` リポジトリ化（proto2 の `_b` は Rev B の内容だけを保存）。fuse_box は削除、DevBoard と `chassis/` `turret/` `main/` `test_a` `test_b` は対象外 |
 | board_ws 直下の drawio（`network.drawio` / `wiring.drawio` など機体名無し） | alpha のもの。`alpha` リポジトリの配線図として置く |
 | board_ws 直下の `発注リスト_gamma両基板.md`（単価入り） | 価格を公開 BOM に載せるかは未決 |
 | mech_ws | 機体ごとに最新世代だけ（alpha_proto2 / beta_proto1 / gamma_proto1）。ユーザーが zip を作り、各機体管理リポジトリの Releases に添付 |
@@ -247,7 +248,6 @@ git に入れるもの・除外するもの:
 | 機体に属さない知見（architecture.md、遊星ギア資料）の置き場 | 未決 |
 | 共通ライブラリが増えたときの命名規則 | 未決 |
 | `test_f303k8_*` / `can_test` をアーカイブするか | 未決 |
-| gamma_turret の履歴を `git filter-repo` で整理してから push するか | 未決（基板リポジトリを作る段階で決める） |
 | BOM に価格・予備込み発注数を載せるか | 未決 |
 | `alpha.repos` | alpha で動いていたコミットが不明。今後検討 |
 | Jetson 向け環境構築手順 | Jetson 構成に着手してから |
