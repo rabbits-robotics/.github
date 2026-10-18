@@ -145,7 +145,7 @@ README の雛形は検討メモ 4 章のものを下敷きにする。alpha は�
 
 - 1 基板 1 リポジトリ。1 枚だけ改版することも、機体をまたいで使い回すこともあるため
 - `gamma_turret` は board_ws 上にローカルの git 履歴がある（2026-08-10 からの 10 コミット、remote 無し、どこにも push されていない）。これに remote を足し、履歴ごと `gamma_turret_pcb` として push する。検証用スクリプト（`check_nets.py` / `expected_nets.csv` / `erc.rpt`）も同居してよい（ユーザー未確認。基板リポジトリを作る段階で確認する）
-- ただしこの履歴には除外対象（`fp-info-cache`、autosave、展開済みガーバー 4 世代）と、他基板のバックアップ zip 46 個（`beta_main-backups` / `beta_turret-backups` / `proto2_turret-backups`）がコミット済み。2026-10-18 に `git filter-repo` で除外対象・他基板のバックアップ・検証スクリプトを履歴から消し、設計メモ（md）は `docs/` へ移した。`old_design/`（旧 STM32 版）は gamma の経緯なので残す
+- ただしこの履歴には除外対象（`fp-info-cache`、autosave、展開済みガーバー 4 世代）と、他基板のバックアップ zip 46 個（`beta_main-backups` / `beta_turret-backups` / `proto2_turret-backups`）がコミット済み。2026-10-18 に `git filter-repo` で除外対象・他基板のバックアップ・検証スクリプトを履歴から消し、設計メモ（md）は `docs/` へ移したうえで、他の基板と同じ「initial commit → KiCad プロジェクトを追加」の 2 コミットに squash した（回路図作成の中間状態は残さない）。`old_design/`（旧 STM32 版）は gamma の経緯なので残す
 - 他の基板は履歴が無いので新規作成する。各基板の現在の KiCad データは「最後に発注した版」と一致しているので、初回コミットにタグを打ち、改版はそこから起こす。README が埋まる前でも TODO 付きで push してよい
 - Rev B のある基板（`proto2_turret_b` / `proto2_yaw_b`）は最新版（Rev B）だけを保存し、Rev A はコミットしない。`proto2_chassis_b` は無印と完全同一で Rev B は存在しない。複数回発注した基板（beta_main）も最新の発注分だけをリリースに添付する（2026-10-18 決定）
 - 設計メモ（md）は基板リポジトリの `docs/` に入れる。検証スクリプト・レポート・画像・SolidWorks アセンブリは入れない（2026-10-18 決定）
@@ -181,9 +181,11 @@ git に入れるもの・除外するもの:
 - 参照側（submodule と `.repos`）はコミットを固定し、同じ機体では両方が同じコミットを指すようにする。タグを打つかどうかは参照側の都合で決める
 - 何を rabcl に入れて何を機体側に残すかの線引き、ライブラリが増えたときの命名規則は `common-lib.md` に追記していく（命名規則は未決）
 
-### 4.7 ROS 2 ワークスペース（attracts_ws）
+### 4.7 ROS 2 ワークスペース（attracts_ws、2026-10-18 に rabbits_ws へ rename 済み）
 
 - attracts_ws は 1 つのまま維持する
+- 開発環境は Dev Container（`rabbits_ws/.devcontainer`）で CI と同じ `ros:jazzy-ros-base` イメージを使う。Windows では WSL2 + Docker Desktop で動かし、GUI は WSLg 経由で表示する（2026-10-18 決定）
+- ローカルの配置は vcs import と同じく、rabbits_ws のチェックアウト直下の `src/` にパッケージのクローンを置く
 - 機体ごとに `beta.repos` / `gamma.repos` を分ける（現状は全パッケージ `version: main`）
 - `.repos` は `vcs export --exact src` でコミット固定し、機体のマイルストーンごとに更新する
 - `beta.repos` は、ユーザーが beta 実機に入っているコードを push してから（2026-10-21 水曜の予定）作る。それまで着手しない
@@ -230,7 +232,7 @@ git に入れるもの・除外するもの:
 | Rabbits/docs/architecture.md、attracts_ws_architecture.md | 機体をまたぐ知見。置き場は未決（handbook か機体管理リポジトリの docs/） |
 | mech_ws/planetary_gear_design.md、計算スクリプト | 同上 |
 | 過去機体のスプレッドシート BOM | 上げ直さない。BOM は今後の正式な公開時・発注時に作る |
-| attracts_ws README | clone URL を組織に修正 |
+| attracts_ws README | clone URL を組織に修正（2026-10-18 済み） |
 | beta_main の `.gitmodules` | rabcl の URL が旧組織（`robot-trainee`）のまま。submodule のコミットを固定する際に組織 URL へ直す |
 | gamma_turret_fw README（旧 gamma_main） | `gamma` リポジトリができてから、機体全体の節を移して分割（検討メモ 3 章） |
 | ベンダー配布物（LK モータツール、dm-tools、ATTRACTS_SimpleClient） | リポジトリには入れず、入手先リンクとバージョンだけ書く |
@@ -266,7 +268,7 @@ git に入れるもの・除外するもの:
 | 3 | `alpha` / `beta` / `gamma` を作成し、README を書く | gamma は検討メモ 4 章の雛形 + gamma_turret_fw の該当節。alpha は proto2 を現行として書く。BOM は作らない |
 | 4 | board_ws から `*_pcb` リポジトリを作成 | gamma_turret は履歴の整理方針を決めてから。他は `.gitignore` 適用後に新規作成し、初回コミットにタグ |
 | 5 | ユーザーが作った最新世代の CAD zip を各機体の Releases に添付 | リリースノートに CERN-OHL-P-2.0 を明記 |
-| 6 | `attracts_*` を `rabbits_*` に rename（リポジトリ名、package.xml、CMake、依存指定、`.repos`、CI）し、rabbits_ws に `beta.repos` / `gamma.repos` を追加、README の URL を修正 | `beta.repos` は 2026-10-21 の push 後 |
+| 6 | `attracts_*` を `rabbits_*` に rename（リポジトリ名、package.xml、CMake、依存指定、`.repos`、CI）し、rabbits_ws に `beta.repos` / `gamma.repos` を追加、README の URL を修正 | rename と URL 修正は 2026-10-18 に完了（手順 4 の後、手順 3 の前に実施）。`beta.repos` は 2026-10-21 の push 後 |
 | 7 | gamma_turret_fw README を分割し、検討メモと本ドキュメントを `.github/docs/` へ移す | |
 
 ---
