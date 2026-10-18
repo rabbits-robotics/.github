@@ -136,8 +136,8 @@ README の雛形は検討メモ 4 章のものを下敷きにする。alpha は�
 
 ### 4.4 ファームウェアリポジトリ
 
-- rabcl を git submodule で参照する（beta_main の現行どおり）
-- PlatformIO でビルドする。開発は VS Code + PlatformIO 拡張機能で完結させる
+- 共通ライブラリ（rabcl など）を git submodule で参照する（beta_main の現行どおり）
+- ビルドシステムと開発環境は基板ごとに選び、README に手順を書く（PlatformIO に限定しない）
 - README の章立ては beta_main の README（システム構成 → 基板詳細 → 前世代からの変更点 → 共通仕様 → 依存ライブラリ → ビルド方法）を下敷きにする
 - 各項目にステータス記号を付ける（✅ 確定・実装済み / 🔧 実装中 / 💭 構想段階）
 
