@@ -96,7 +96,7 @@
 | 種類 | 命名 | 既存・予定 | ライセンス |
 |---|---|---|---|
 | 機体管理 | `機体名` | `alpha` / `beta` / `gamma`（新設） | CC BY 4.0 |
-| ファームウェア | `基板名_fw`（市販ボード向けは `製品名_役割_fw`）。既存リポジトリは rename しない | alpha: `proto2_turret` / `proto2_yaw` / `proto2_main` / `proto2_chassis`、beta: `beta_main`、gamma: `gamma_main`、ほか `m5_basic_2_7_attracts`（いずれも既存名を維持） | MIT |
+| ファームウェア | `基板名_fw`（市販ボード向けは `製品名_役割_fw`）。既存リポジトリは rename しない。ただし `gamma_main` は整備前なので命名規則に合わせて `gamma_turret_fw` に rename した（2026-10-18） | alpha: `proto2_turret` / `proto2_yaw` / `proto2_main` / `proto2_chassis`、beta: `beta_main`、gamma: `gamma_turret_fw`（旧 `gamma_main`）、ほか `m5_basic_2_7_attracts`（gamma 以外は既存名を維持） | MIT |
 | 基板 | `基板名_pcb`、1 基板 1 リポジトリ | `gamma_turret_pcb` / `gamma_neck_pcb` / `gamma_chassis_pcb` / `beta_main_pcb` / `beta_chassis_pcb` / `proto2_turret_pcb` / `proto2_yaw_pcb` / `proto2_chassis_pcb` / `fuse_box_pcb` / `rsg_devboard_pcb`（新設、board_ws から） | CERN-OHL-P-2.0 |
 | 共通ライブラリ | 増えたときの命名規則は未決 | `rabcl` | MIT |
 | ROS 2 | `rabbits_役割`。既存ライブラリの ROS 2 ラッパーは `ライブラリ名_ros2`。既存の `attracts_*` は `rabbits_*` に rename する | `rabbits_ws` / `rabbits_bridge` / `rabbits_description` / `rabbits_interface` / `rabbits_msgs`（現 `attracts_*`）、`rabcl_ros2` | MIT |
@@ -132,7 +132,7 @@
 
 細かい項目は運用しながら増やす。現時点で確定させない。
 
-README の雛形は検討メモ 4 章のものを下敷きにする。alpha は最新世代（proto2）を現行として書き、proto1 からの経緯は書かない。gamma_main README のうち機体全体に関わる節（システム構成・データフロー、基板間接続、電源系統、gamma_neck / gamma_chassis、beta からの変更点）は、`gamma` リポジトリができてから移す（検討メモ 3 章）。
+README の雛形は検討メモ 4 章のものを下敷きにする。alpha は最新世代（proto2）を現行として書き、proto1 からの経緯は書かない。gamma_turret_fw README のうち機体全体に関わる節（システム構成・データフロー、基板間接続、電源系統、gamma_neck / gamma_chassis、beta からの変更点）は、`gamma` リポジトリができてから移す（検討メモ 3 章）。
 
 ### 4.4 ファームウェアリポジトリ
 
@@ -231,7 +231,7 @@ git に入れるもの・除外するもの:
 | 過去機体のスプレッドシート BOM | 上げ直さない。BOM は今後の正式な公開時・発注時に作る |
 | attracts_ws README | clone URL を組織に修正 |
 | beta_main の `.gitmodules` | rabcl の URL が旧組織（`robot-trainee`）のまま。submodule のコミットを固定する際に組織 URL へ直す |
-| gamma_main README | `gamma` リポジトリができてから、機体全体の節を移して分割（検討メモ 3 章） |
+| gamma_turret_fw README（旧 gamma_main） | `gamma` リポジトリができてから、機体全体の節を移して分割（検討メモ 3 章） |
 | ベンダー配布物（LK モータツール、dm-tools、ATTRACTS_SimpleClient） | リポジトリには入れず、入手先リンクとバージョンだけ書く |
 
 ---
@@ -251,7 +251,7 @@ git に入れるもの・除外するもの:
 | BOM に価格・予備込み発注数を載せるか | 未決 |
 | `alpha.repos` | alpha で動いていたコミットが不明。今後検討 |
 | Jetson 向け環境構築手順 | Jetson 構成に着手してから |
-| gamma_main README の未決項目（通信プロトコル、CAN ID、脚の制御モードなど） | 別途相談しながら埋める（検討メモ 2 章） |
+| gamma_turret_fw README の未決項目（通信プロトコル、CAN ID、脚の制御モードなど） | 別途相談しながら埋める（検討メモ 2 章） |
 
 ---
 
@@ -263,11 +263,11 @@ git に入れるもの・除外するもの:
 |---|---|---|
 | 1 | `rabbits-robotics/.github`（作成済み、空）を clone し、profile README と `docs/` の 6 ファイルと LICENSE を書いて初回コミット・push | 文面は本ドキュメントの 4 章を展開する。ファイルごとにレビューを経てコミット |
 | 2 | 既存 17 リポジトリに LICENSE を追加 | 種別ごとに MIT / CERN-OHL-P-2.0 / CC BY 4.0 |
-| 3 | `alpha` / `beta` / `gamma` を作成し、README を書く | gamma は検討メモ 4 章の雛形 + gamma_main の該当節。alpha は proto2 を現行として書く。BOM は作らない |
+| 3 | `alpha` / `beta` / `gamma` を作成し、README を書く | gamma は検討メモ 4 章の雛形 + gamma_turret_fw の該当節。alpha は proto2 を現行として書く。BOM は作らない |
 | 4 | board_ws から `*_pcb` リポジトリを作成 | gamma_turret は履歴の整理方針を決めてから。他は `.gitignore` 適用後に新規作成し、初回コミットにタグ |
 | 5 | ユーザーが作った最新世代の CAD zip を各機体の Releases に添付 | リリースノートに CERN-OHL-P-2.0 を明記 |
 | 6 | `attracts_*` を `rabbits_*` に rename（リポジトリ名、package.xml、CMake、依存指定、`.repos`、CI）し、rabbits_ws に `beta.repos` / `gamma.repos` を追加、README の URL を修正 | `beta.repos` は 2026-10-21 の push 後 |
-| 7 | gamma_main README を分割し、検討メモと本ドキュメントを `.github/docs/` へ移す | |
+| 7 | gamma_turret_fw README を分割し、検討メモと本ドキュメントを `.github/docs/` へ移す | |
 
 ---
 
