@@ -68,7 +68,8 @@
 
 - 組織リポジトリ `rabbits-robotics/.github` を作り、これを handbook とする
 - `profile/README.md` が組織トップに表示される。ここに Rabbits の紹介、機体一覧へのリンク、ルールの目次を置く
-- 種類ごとの運用ルールは同じリポジトリの `docs/` に Markdown を分けて置き、profile README からリンクする
+- 全リポジトリに共通するルールを `docs/repositories.md`（リポジトリ運用方法）にまとめ、種類ごとの運用ルールはそれを前提とした種類別の Markdown に分けて置く。profile README からリンクする
+- ライセンスは種類別ファイルに、選定理由とあわせて書く（独立した `license.md` は作らない）
 - 検討メモ 7 章の「`handbook` リポジトリ + `.github` に 1 行リンク」案は取り下げる
 
 構成:
@@ -78,9 +79,9 @@
 ├── profile/README.md        組織トップ。紹介、機体一覧、ルール目次
 ├── LICENSE                  CC BY 4.0
 └── docs/
-    ├── repositories.md      リポジトリの切り方・命名・新しい機体を作るときの手順
-    ├── license.md           種別ごとのライセンスと付け方
-    ├── readme-style.md      README の章立て、ステータス記号、設計判断を docs/ に残す運用
+    ├── repositories.md      リポジトリ運用方法。全リポジトリ共通の上位ドキュメント。
+    │                        種類・命名、README の章立て・ステータス記号・設計判断の残し方、
+    │                        新しい機体を作るときの手順
     ├── robot-repo.md        機体管理リポジトリの中身
     ├── firmware-repo.md     ファームウェアリポジトリの運用
     ├── pcb-repo.md          基板リポジトリの運用
@@ -105,7 +106,7 @@
 - `test_f303k8_*`（alpha 初版用のテスト実装）と `can_test` は種類として扱わず、対象外とする。アーカイブするかは未決
 - 基板リポジトリは機体をまたいで使い回す前提。機体管理リポジトリ側から「この機体はこの基板のこのタグを使う」とリンクする
 
-ライセンスの選び方の根拠（handbook の `license.md` にも書く）:
+ライセンスの選び方の根拠（handbook では種類別ファイルにそれぞれ書く）:
 
 - 「クレジットを残してくれれば、それ以外は自由」が方針
 - ソフトウェアは MIT。最も短く、著作権表示の保持のみを要求する
@@ -260,7 +261,7 @@ git に入れるもの・除外するもの:
 
 | 順 | 作業 | 備考 |
 |---|---|---|
-| 1 | `rabbits-robotics/.github`（作成済み、空）を clone し、profile README と `docs/` の 8 ファイルと LICENSE を書いて初回コミット・push | 文面は本ドキュメントの 4 章を展開する |
+| 1 | `rabbits-robotics/.github`（作成済み、空）を clone し、profile README と `docs/` の 6 ファイルと LICENSE を書いて初回コミット・push | 文面は本ドキュメントの 4 章を展開する。ファイルごとにレビューを経てコミット |
 | 2 | 既存 17 リポジトリに LICENSE を追加 | 種別ごとに MIT / CERN-OHL-P-2.0 / CC BY 4.0 |
 | 3 | `alpha` / `beta` / `gamma` を作成し、README を書く | gamma は検討メモ 4 章の雛形 + gamma_main の該当節。alpha は proto2 を現行として書く。BOM は作らない |
 | 4 | board_ws から `*_pcb` リポジトリを作成 | gamma_turret は履歴の整理方針を決めてから。他は `.gitignore` 適用後に新規作成し、初回コミットにタグ |
