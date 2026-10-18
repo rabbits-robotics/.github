@@ -38,5 +38,5 @@
 
 ## ライセンス
 
-このリポジトリの文書は [CC BY 4.0](https://github.com/rabbits-robotics/.github/blob/main/LICENSE) です。
+このリポジトリの文書は © Rabbits Robotics、[CC BY 4.0](https://github.com/rabbits-robotics/.github/blob/main/LICENSE) です。
 各リポジトリのライセンスは、それぞれの LICENSE ファイルを参照してください。
