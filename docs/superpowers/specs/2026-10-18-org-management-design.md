@@ -96,13 +96,15 @@
 | 種類 | 命名 | 既存・予定 | ライセンス |
 |---|---|---|---|
 | 機体管理 | `機体名` | `alpha` / `beta` / `gamma`（新設） | CC BY 4.0 |
-| ファームウェア | `機体名_役割` | alpha: `proto2_turret` / `proto2_yaw` / `proto2_main` / `proto2_chassis`（既存名を維持）、beta: `beta_main`、gamma: `gamma_main`、ほか `m5_basic_2_7_attracts` | MIT |
+| ファームウェア | `基板名_fw`（市販ボード向けは `製品名_役割_fw`）。既存リポジトリは rename しない | alpha: `proto2_turret` / `proto2_yaw` / `proto2_main` / `proto2_chassis`、beta: `beta_main`、gamma: `gamma_main`、ほか `m5_basic_2_7_attracts`（いずれも既存名を維持） | MIT |
 | 基板 | `基板名_pcb`、1 基板 1 リポジトリ | `gamma_turret_pcb` / `gamma_neck_pcb` / `gamma_chassis_pcb` / `beta_main_pcb` / `beta_chassis_pcb` / `proto2_turret_pcb` / `proto2_yaw_pcb` / `proto2_chassis_pcb` / `fuse_box_pcb` / `rsg_devboard_pcb`（新設、board_ws から） | CERN-OHL-P-2.0 |
-| 共通ライブラリ | 既存どおり。増えたときの命名規則は未決 | `rabcl` / `rabcl_ros2` | MIT |
-| ROS 2 | 既存どおり | `attracts_ws` / `attracts_bridge` / `attracts_description` / `attracts_interface` / `attracts_msgs` | MIT |
+| 共通ライブラリ | 増えたときの命名規則は未決 | `rabcl` | MIT |
+| ROS 2 | `rabbits_役割`。既存ライブラリの ROS 2 ラッパーは `ライブラリ名_ros2`。既存の `attracts_*` は `rabbits_*` に rename する | `rabbits_ws` / `rabbits_bridge` / `rabbits_description` / `rabbits_interface` / `rabbits_msgs`（現 `attracts_*`）、`rabcl_ros2` | MIT |
 | 組織ルール | `.github` | 新設 | CC BY 4.0 |
 
 - 管理リポジトリ名に `_attracts` などの接尾辞は付けない（一度検討して取り下げ）
+- `rabcl_ros2` は共通ライブラリではなく ROS 2 パッケージ（rabcl のラッパー）として扱う
+- ROS 2 リポジトリは競技に依存しない名前にする。ATTRACTS 固有の要素はパッケージ内部の名前（`AttractsCommand.msg` など）で表す
 - `test_f303k8_*`（alpha 初版用のテスト実装）と `can_test` は種類として扱わず、対象外とする。アーカイブするかは未決
 - 基板リポジトリは機体をまたいで使い回す前提。機体管理リポジトリ側から「この機体はこの基板のこのタグを使う」とリンクする
 
@@ -266,7 +268,7 @@ git に入れるもの・除外するもの:
 | 3 | `alpha` / `beta` / `gamma` を作成し、README を書く | gamma は検討メモ 4 章の雛形 + gamma_main の該当節。alpha は proto2 を現行として書く。BOM は作らない |
 | 4 | board_ws から `*_pcb` リポジトリを作成 | gamma_turret は履歴の整理方針を決めてから。他は `.gitignore` 適用後に新規作成し、初回コミットにタグ |
 | 5 | ユーザーが作った最新世代の CAD zip を各機体の Releases に添付 | リリースノートに CERN-OHL-P-2.0 を明記 |
-| 6 | attracts_ws に `beta.repos` / `gamma.repos` を追加し、README の URL を修正 | `beta.repos` は 2026-10-21 の push 後 |
+| 6 | `attracts_*` を `rabbits_*` に rename（リポジトリ名、package.xml、CMake、依存指定、`.repos`、CI）し、rabbits_ws に `beta.repos` / `gamma.repos` を追加、README の URL を修正 | `beta.repos` は 2026-10-21 の push 後 |
 | 7 | gamma_main README を分割し、検討メモと本ドキュメントを `.github/docs/` へ移す | |
 
 ---
