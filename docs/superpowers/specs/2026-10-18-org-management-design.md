@@ -265,7 +265,7 @@ git に入れるもの・除外するもの:
 |---|---|---|
 | 1 | `rabbits-robotics/.github`（作成済み、空）を clone し、profile README と `docs/` の 6 ファイルと LICENSE を書いて初回コミット・push | 文面は本ドキュメントの 4 章を展開する。ファイルごとにレビューを経てコミット |
 | 2 | 既存 17 リポジトリに LICENSE を追加 | 種別ごとに MIT / CERN-OHL-P-2.0 / CC BY 4.0 |
-| 3 | `alpha` / `beta` / `gamma` を作成し、README を書く | gamma は検討メモ 4 章の雛形 + gamma_turret_fw の該当節。alpha は proto2 を現行として書く。BOM は作らない |
+| 3 | `alpha` / `beta` / `gamma` を作成し、README を書く | gamma は検討メモ 4 章の雛形 + gamma_turret_fw の該当節。alpha は proto2 を現行として書く。BOM は作らない。2026-10-18 に 3 機体とも完了（alpha / beta は `diagrams/` に drawio と PNG、`images/` に写真も追加） |
 | 4 | board_ws から `*_pcb` リポジトリを作成 | gamma_turret は履歴の整理方針を決めてから。他は `.gitignore` 適用後に新規作成し、初回コミットにタグ |
 | 5 | ユーザーが作った最新世代の CAD zip を各機体の Releases に添付 | リリースノートに CERN-OHL-P-2.0 を明記 |
 | 6 | `attracts_*` を `rabbits_*` に rename（リポジトリ名、package.xml、CMake、依存指定、`.repos`、CI）し、rabbits_ws に `beta.repos` / `gamma.repos` を追加、README の URL を修正 | rename と URL 修正は 2026-10-18 に完了（手順 4 の後、手順 3 の前に実施）。`beta.repos` は 2026-10-21 の push 後 |
