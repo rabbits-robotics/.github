@@ -234,7 +234,7 @@ git に入れるもの・除外するもの:
 | 過去機体のスプレッドシート BOM | 上げ直さない。BOM は今後の正式な公開時・発注時に作る |
 | attracts_ws README | clone URL を組織に修正（2026-10-18 済み） |
 | beta_main の `.gitmodules` | rabcl の URL が旧組織（`robot-trainee`）のまま。submodule のコミットを固定する際に組織 URL へ直す |
-| gamma_turret_fw README（旧 gamma_main） | `gamma` リポジトリができてから、機体全体の節を移して分割（検討メモ 3 章） |
+| gamma_turret_fw README（旧 gamma_main） | `gamma` リポジトリができてから、機体全体の節を移して分割（検討メモ 3 章）。2026-10-18 済み |
 | ベンダー配布物（LK モータツール、dm-tools、ATTRACTS_SimpleClient） | リポジトリには入れず、入手先リンクとバージョンだけ書く |
 
 ---
@@ -269,7 +269,7 @@ git に入れるもの・除外するもの:
 | 4 | board_ws から `*_pcb` リポジトリを作成 | gamma_turret は履歴の整理方針を決めてから。他は `.gitignore` 適用後に新規作成し、初回コミットにタグ |
 | 5 | ユーザーが作った最新世代の CAD zip を各機体の Releases に添付 | リリースノートに CERN-OHL-P-2.0 を明記 |
 | 6 | `attracts_*` を `rabbits_*` に rename（リポジトリ名、package.xml、CMake、依存指定、`.repos`、CI）し、rabbits_ws に `beta.repos` / `gamma.repos` を追加、README の URL を修正 | rename と URL 修正は 2026-10-18 に完了（手順 4 の後、手順 3 の前に実施）。`beta.repos` は 2026-10-21 の push 後 |
-| 7 | gamma_turret_fw README を分割し、検討メモと本ドキュメントを `.github/docs/` へ移す | |
+| 7 | gamma_turret_fw README を分割し、検討メモと本ドキュメントを `.github/docs/` へ移す | 2026-10-18 に完了（README は firmware-repo.md の章立てに揃え、gamma へのリンクは置かない） |
 
 ---
 
